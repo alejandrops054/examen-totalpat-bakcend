@@ -1,5 +1,3 @@
-version: '3.8'
-
 services:
   app:
     build:
@@ -12,8 +10,6 @@ services:
       - .:/var/www/html
     depends_on:
       - mysql
-    environment:
-      APACHE_RUN_PORT: 8005
 
   mysql:
     image: mysql:8.0
