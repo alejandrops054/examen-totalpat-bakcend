@@ -31,4 +31,37 @@ class AuthController extends Controller
 
         return response()->json(['token' => $token]);
     }
+
+    public function validarToken(Request $request)
+    {
+
+        try {
+            $authHeader = $request->header('Authorization');
+
+            if (!$authHeader || !str_starts_with($authHeader, 'Bearer ')) {
+                return response()->json(['message' => 'Token no proporcionado'], 401);
+            }
+
+            $token = str_replace('Bearer ', '', $authHeader);
+
+            $decoded = \App\Helpers\JwtHelper::decode($token, config('app.key'));
+
+            if (!$decoded || !isset($decoded['sub'])) {
+                return response()->json(['message' => 'Token inválido'], 401);
+            }
+
+            $user = \App\Models\User::find($decoded['sub']);
+
+            if (!$user) {
+                return response()->json(['message' => 'Usuario no encontrado'], 404);
+            }
+
+            return response()->json(['user' => $user], 200);
+        } catch (\Throwable $e) {
+            return response()->json([
+                'message' => 'Error al procesar el token',
+                'error' => $e->getMessage()
+            ], 401);
+        }
+    }
 }

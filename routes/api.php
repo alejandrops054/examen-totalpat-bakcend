@@ -8,6 +8,8 @@ Route::post('login', [AuthController::class, 'login']);
 
 Route::get('tarjetas', [PokemonController::class, 'cards']);
 
+Route::middleware(['jwt'])->get('validar-token', [AuthController::class, 'validarToken']);
+
 Route::middleware(['jwt'])->group(function () {
     Route::apiResource('pokemons', PokemonController::class);
 });
