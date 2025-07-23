@@ -9,17 +9,17 @@ use Illuminate\Database\Seeder;
 
 class DatabaseSeeder extends Seeder
 {
+    /**
+     * Seed the application's database.
+     */
     public function run(): void
     {
+        // User::factory(10)->create();
 
-        User::firstOrCreate(
-            ['email' => 'test@example.com'],
-            ['name' => 'Test User', 'password' => Hash::make('password')]
-        );
-
-        User::firstOrCreate(
-            ['email' => 'admin@exam.com'],
-            ['name' => 'admin', 'password' => Hash::make('123')]
-        );
+        User::factory()->create([
+            'name' => 'admin',
+            'email' => 'admin@pruebas.com',
+            'password' => Hash::make('123'),
+        ]);
     }
 }
